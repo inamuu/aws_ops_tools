@@ -5,4 +5,5 @@ AWSのオペレーションで使えそうなツールをまとめるリポジ�
 ### List
 
 - ec2_manager
-- cloudwatchlogs_parser 
+- cloudwatchlogs_parser
+- templates(これはツールを作るのにコピーして使うやつ)
