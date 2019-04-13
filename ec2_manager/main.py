@@ -3,7 +3,7 @@
 import boto3
 import argparse
 
-def setup_ec2():
+def setup():
     print("### setup ec2 ###")
 
 def main():
@@ -18,8 +18,8 @@ def main():
     subparsers = parser.add_subparsers(dest='parser', title='subcomands')
     subparsers.required = True
     
-    parser_setup_ec2 = subparsers.add_parser('setup_ec2', help='setup_ec2だよ')
-    parser_setup_ec2.set_defaults(fn=setup_ec2)
+    parser_setup = subparsers.add_parser('setup', help='setupだよ')
+    parser_setup.set_defaults(fn=setup)
     
     args = parser.parse_args()
     args.fn()
