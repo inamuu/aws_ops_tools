@@ -18,7 +18,7 @@ def main():
     subparsers = parser.add_subparsers(dest='parser', title='subcomands')
     subparsers.required = True
     
-    parser_setup = subparsers.add_parser('setup', help='setupだよ')
+    parser_setup = subparsers.add_parser('setup', help='EC2をセットアップします。')
     parser_setup.set_defaults(fn=setup)
     
     args = parser.parse_args()
