@@ -9,10 +9,10 @@ def setup(args):
 
 def main():
     parser = argparse.ArgumentParser(
-      prog='EC2 Manager',
-      usage='python main.py [setup] [-r/--role] var',
-      description='AWS EC2 を管理するためのCLIツールです',
-      add_help=True,
+        prog='EC2 Manager',
+        usage='python main.py [setup] [-r/--role] var',
+        description='AWS EC2 を管理するためのCLIツールです',
+        add_help=True,
     )
 
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
