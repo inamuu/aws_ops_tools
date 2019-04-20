@@ -1,11 +1,19 @@
 # coding: utf-8
 
-import boto3
 import argparse
+import boto3
+import yaml
+
+with open('role.yaml') as file:
+    yml = yaml.full_load(file)
 
 def setup(args):
-    print("### setup ec2 ###")
-    print(args)
+    role = args.role
+    print("\nEC2 Setup start..\n")
+    all  = yml[role]
+    name = yml[role]['name']
+    print("all  : %s" % all)
+    print("role : %s" % name)
 
 def main():
     parser = argparse.ArgumentParser(
