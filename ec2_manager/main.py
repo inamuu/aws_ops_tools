@@ -1,10 +1,16 @@
 # coding: utf-8
 
+import os, sys
 import argparse
 import boto3
 import yaml
+from os.path import join, dirname
+from dotenv import load_dotenv
+from boto3.session import Session
 
-session = Session(profile_name=os.environ.get("profile_name")
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+session = Session(profile_name=os.environ.get("profile_name"))
 
 with open('role.yaml') as file:
     yml = yaml.full_load(file)
@@ -19,10 +25,10 @@ def setup(args):
 
 def main():
     parser = argparse.ArgumentParser(
-        prog='EC2 Manager',
-        usage='python main.py [setup] [-r/--role] var',
-        description='AWS EC2 を管理するためのCLIツールです',
-        add_help=True,
+        prog        = 'EC2 Manager',
+        usage       = 'python main.py setup [-r/--role ...]',
+        description = 'AWS EC2 を管理するためのCLIツールです',
+        add_help    = True,
     )
 
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
