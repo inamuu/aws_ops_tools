@@ -8,20 +8,51 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from boto3.session import Session
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-session = Session(profile_name=os.environ.get("profile_name"))
 
-with open('role.yaml') as file:
-    yml = yaml.full_load(file)
+def loadenv():
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+    ec2 = boto3.session.Session(profile_name=os.environ.get("profile_name")).client('ec2')
+    return ec2
 
 def setup(args):
-    role = args.role
+    with open('test.yaml') as file:
+        yml = yaml.full_load(file)
+
+    role             = args.role
+    all              = yml[role]
+    imageid          = yml[role]['imageid']
+    rolecount        = yml[role]['count']
+    instancetype     = yml[role]['instancetype']
+    keyname          = yml[role]['keyname']
+    securitygroupids = yml[role]['securitygroupids']
+    nametag          = yml[role]['nametag']
+
     print("\nEC2 Setup start..\n")
-    all  = yml[role]
-    name = yml[role]['name']
     print("all  : %s" % all)
-    print("role : %s" % name)
+    print("role : %s" % nametag)
+
+    ec2      = loadenv()
+    instance = ec2.run_instances(
+        ImageId=imageid,
+        MinCount=rolecount,
+        MaxCount=rolecount,
+        InstanceType=instancetype
+        KeyName=keyname,
+        SecurityGroupIds=[securitygroupids],
+        TagSpecifications=[
+            {
+                'ResourceType': 'instance',
+                'Tags': [
+                            {
+                                'Key': 'Name',
+                                'Value': nametag
+                            },
+                ]
+            },
+        ],
+    )
+    print("\nEC2 Setup Finish..\n")
 
 def main():
     parser = argparse.ArgumentParser(
