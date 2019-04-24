@@ -4,6 +4,8 @@ import argparse
 import boto3
 import yaml
 
+session = Session(profile_name=os.environ.get("profile_name")
+
 with open('role.yaml') as file:
     yml = yaml.full_load(file)
 
