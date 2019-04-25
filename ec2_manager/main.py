@@ -35,6 +35,7 @@ def setup(args):
 
     ec2      = loadenv()
     instance = ec2.run_instances(
+        DryRun            = args.dryrun,
         ImageId           = imageid,
         MinCount          = rolecount,
         MaxCount          = rolecount,
@@ -70,6 +71,7 @@ def main():
     
     parser_setup = subparsers.add_parser('setup', help='EC2をセットアップします。')
     parser_setup.add_argument('-r', '--role', required=True)
+    parser_setup.add_argument('--dryrun', action='store_true')
     parser_setup.set_defaults(handler=setup)
     
     args = parser.parse_args()
