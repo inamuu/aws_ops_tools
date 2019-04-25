@@ -26,6 +26,7 @@ def setup(args):
     instancetype     = yml[role]['instancetype']
     keyname          = yml[role]['keyname']
     securitygroupids = yml[role]['securitygroupids']
+    subnetid         = yml[role]['subnetid']
     nametag          = yml[role]['nametag']
 
     print("\nEC2 Setup start..\n")
@@ -34,20 +35,21 @@ def setup(args):
 
     ec2      = loadenv()
     instance = ec2.run_instances(
-        ImageId=imageid,
-        MinCount=rolecount,
-        MaxCount=rolecount,
-        InstanceType=instancetype
-        KeyName=keyname,
-        SecurityGroupIds=[securitygroupids],
-        TagSpecifications=[
+        ImageId           = imageid,
+        MinCount          = rolecount,
+        MaxCount          = rolecount,
+        InstanceType      = instancetype,
+        KeyName           = keyname,
+        SecurityGroupIds  = [securitygroupids],
+        SubnetId          = subnetid,
+        TagSpecifications = [
             {
                 'ResourceType': 'instance',
                 'Tags': [
-                            {
-                                'Key': 'Name',
-                                'Value': nametag
-                            },
+                    {
+                        'Key': 'Name',
+                        'Value': nametag
+                    },
                 ]
             },
         ],
