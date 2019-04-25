@@ -59,12 +59,12 @@ def setup(args):
 def main():
     parser = argparse.ArgumentParser(
         prog        = 'EC2 Manager',
-        usage       = 'python main.py setup [-r/--role ...]',
+        usage       = 'python main.py setup [-r/--role] ...',
         description = 'AWS EC2 を管理するためのCLIツールです',
         add_help    = True,
     )
 
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
     subparsers = parser.add_subparsers(dest='parser', title='subcomands')
     subparsers.required = True
     
