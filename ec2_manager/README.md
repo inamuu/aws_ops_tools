@@ -16,7 +16,8 @@ cp role.yaml.sampl role.yaml
 ```
 
 sampleを参考に中身を修正する。  
-sampleに無いパラメータはスクリプトにも存在していないので、必要であれば適当に追加して参照できるようにする。
+sampleに無いパラメータはスクリプトにも存在していないので、必要であれば適当に追加して参照できるようにする。  
+role名（ここではtest)がそのまま引数になる。
 
 ```yaml
 test:
@@ -28,6 +29,7 @@ test:
   subnetid:
   nametag: test-instance
 ```
+
 
 ## Install
 
