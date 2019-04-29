@@ -4,5 +4,5 @@ test:
   instancetype: t3.nano
   keyname:
   securitygroupids:
-  sebunetid:
+  subnetid:
   nametag: test-instance
