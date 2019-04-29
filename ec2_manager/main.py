@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 from boto3.session import Session
 
 def run_instances():
-    ec2      = loadenv()
     instance = ec2.run_instances(
         DryRun            = args.dryrun,
         ImageId           = imageid,
@@ -42,6 +41,7 @@ def setup(args):
     with open('role.yaml') as file:
         yml = yaml.full_load(file)
 
+    ec2              = loadenv()
     role             = args.role
     all              = yml[role]
     imageid          = yml[role]['imageid']
@@ -52,20 +52,18 @@ def setup(args):
     subnetid         = yml[role]['subnetid']
     nametag          = yml[role]['nametag']
 
-    print("\nEC2 Setup start..\n")
-    print("all  : %s" % all)
-    print("role : %s" % nametag)
-
     while True:
-        choice = input("%s インスタンスを起動しますか？ [y/n]: " % nametag).lower()
-        if choice == ['y']:
-            print('yes!')
+        for key, value in all.items():
+            print("%s: %s" % (key ,value))
+        choice = input("\n上記設定で %s インスタンスを作成しますか？ [y/n]: " % nametag).lower()
+        if choice in ['y', 'yes']:
+            print("\n%s インスンタンスの作成を開始します.." % nametag)
+            print("\n%s インスンタンスを作成しました" % nametag)
             return True
         elif choice in ['n', 'no']:
-            print('No!')
+            print('インスタンス作成を停止しました')
             return False
 
-    print("\nEC2 Setup Finish..\n")
 
 def main():
     parser = argparse.ArgumentParser(
