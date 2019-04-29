@@ -68,7 +68,7 @@ def setup(args):
             print("\n%s インスンタンスを作成しました" % nametag)
             return True
         elif choice in ['n', 'no']:
-            print('インスタンス作成を停止しました')
+            print('\nインスタンス作成を中止しました')
             return False
 
 
