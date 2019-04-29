@@ -27,6 +27,7 @@ def run_instances(args, dryrun):
         KeyName           = keyname,
         SecurityGroupIds  = [securitygroupids],
         SubnetId          = subnetid,
+        UserData          = open('./scripts/init.sh').read(),
         TagSpecifications = [
             {
                 'ResourceType': 'instance',
