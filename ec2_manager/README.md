@@ -18,6 +18,17 @@ cp role.yaml.sampl role.yaml
 sampleを参考に中身を修正する。  
 sampleに無いパラメータはスクリプトにも存在していないので、必要であれば適当に追加して参照できるようにする。
 
+```yaml
+test:
+  imageid:
+  count: 1
+  instancetype: t3.nano
+  keyname:
+  securitygroupids:
+  subnetid:
+  nametag: test-instance
+```
+
 ## Install
 
 ```sh
