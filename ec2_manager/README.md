@@ -10,6 +10,14 @@ EC2を作るやつ
 cp .env.sample .env
 ```
 
+role.yaml.sampleをコピーしてrole.yamlを作る。
+```
+cp role.yaml.sampl role.yaml
+```
+
+sampleを参考に中身を修正する。  
+sampleに無いパラメータはスクリプトにも存在していないので、必要であれば適当に追加して参照できるようにする。
+
 ## Install
 
 ```sh
