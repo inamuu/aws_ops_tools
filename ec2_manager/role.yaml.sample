@@ -1,0 +1,8 @@
+test:
+  imageid:
+  count: 1
+  instancetype: t3.nano
+  keyname:
+  securitygroupids:
+  sebunetid:
+  nametag: test-instance
