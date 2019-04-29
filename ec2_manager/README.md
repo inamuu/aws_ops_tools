@@ -2,7 +2,7 @@
 
 EC2を作るやつ
 
-### Setup
+## Setup
 
 .env.sampleをコピーして.envを作り、中身をAWS Credentialsにあわせて修正する。
 
@@ -10,8 +10,20 @@ EC2を作るやつ
 cp .env.sample .env
 ```
 
-### Install
+## Install
 
 ```sh
 pip install -r requirements.txt -t site-packages
+```
+
+## Usage
+
+Setup(Dryrun)
+```sh
+python main.py setup -r app --dryrun
+```
+
+Setup
+```sh
+python main.py setup -r app
 ```
