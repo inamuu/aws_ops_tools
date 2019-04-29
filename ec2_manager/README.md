@@ -13,7 +13,7 @@ cp .env.sample .env
 ## Install
 
 ```sh
-pip install -r requirements.txt -t site-packages
+pip install -r requirements.txt
 ```
 
 ## Usage
