@@ -8,9 +8,18 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from boto3.session import Session
 
-def run_instances():
+def run_instances(args, dryrun):
+    imageid          = args['imageid']
+    rolecount        = args['count']
+    instancetype     = args['instancetype']
+    keyname          = args['keyname']
+    securitygroupids = args['securitygroupids']
+    subnetid         = args['subnetid']
+    nametag          = args['nametag']
+
+    ec2      = loadenv()
     instance = ec2.run_instances(
-        DryRun            = args.dryrun,
+        DryRun            = dryrun,
         ImageId           = imageid,
         MinCount          = rolecount,
         MaxCount          = rolecount,
@@ -41,16 +50,10 @@ def setup(args):
     with open('role.yaml') as file:
         yml = yaml.full_load(file)
 
-    ec2              = loadenv()
-    role             = args.role
-    all              = yml[role]
-    imageid          = yml[role]['imageid']
-    rolecount        = yml[role]['count']
-    instancetype     = yml[role]['instancetype']
-    keyname          = yml[role]['keyname']
-    securitygroupids = yml[role]['securitygroupids']
-    subnetid         = yml[role]['subnetid']
-    nametag          = yml[role]['nametag']
+    role    = args.role
+    all     = yml[role]
+    nametag = yml[role]['nametag']
+    dryrun  = args.dryrun
 
     while True:
         for key, value in all.items():
@@ -58,6 +61,7 @@ def setup(args):
         choice = input("\n上記設定で %s インスタンスを作成しますか？ [y/n]: " % nametag).lower()
         if choice in ['y', 'yes']:
             print("\n%s インスンタンスの作成を開始します.." % nametag)
+            run_instances(all, dryrun)
             print("\n%s インスンタンスを作成しました" % nametag)
             return True
         elif choice in ['n', 'no']:
