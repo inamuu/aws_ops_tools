@@ -40,6 +40,9 @@ def run_instances(args, dryrun):
         ],
     )
 
+    privateip = instance['Instances'][0]['PrivateIpAddress']
+    print("プライベートIPアドレスは %s が割当られました" % privateip)
+
 def loadenv():
     dotenv_path = join(dirname(__file__), '.env')
     load_dotenv(dotenv_path)
