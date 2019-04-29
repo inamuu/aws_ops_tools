@@ -8,31 +8,7 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 from boto3.session import Session
 
-
-def loadenv():
-    dotenv_path = join(dirname(__file__), '.env')
-    load_dotenv(dotenv_path)
-    ec2 = boto3.session.Session(profile_name=os.environ.get("profile_name")).client('ec2')
-    return ec2
-
-def setup(args):
-    with open('test.yaml') as file:
-        yml = yaml.full_load(file)
-
-    role             = args.role
-    all              = yml[role]
-    imageid          = yml[role]['imageid']
-    rolecount        = yml[role]['count']
-    instancetype     = yml[role]['instancetype']
-    keyname          = yml[role]['keyname']
-    securitygroupids = yml[role]['securitygroupids']
-    subnetid         = yml[role]['subnetid']
-    nametag          = yml[role]['nametag']
-
-    print("\nEC2 Setup start..\n")
-    print("all  : %s" % all)
-    print("role : %s" % nametag)
-
+def run_instances():
     ec2      = loadenv()
     instance = ec2.run_instances(
         DryRun            = args.dryrun,
@@ -55,6 +31,40 @@ def setup(args):
             },
         ],
     )
+
+def loadenv():
+    dotenv_path = join(dirname(__file__), '.env')
+    load_dotenv(dotenv_path)
+    ec2 = boto3.session.Session(profile_name=os.environ.get("profile_name")).client('ec2')
+    return ec2
+
+def setup(args):
+    with open('role.yaml') as file:
+        yml = yaml.full_load(file)
+
+    role             = args.role
+    all              = yml[role]
+    imageid          = yml[role]['imageid']
+    rolecount        = yml[role]['count']
+    instancetype     = yml[role]['instancetype']
+    keyname          = yml[role]['keyname']
+    securitygroupids = yml[role]['securitygroupids']
+    subnetid         = yml[role]['subnetid']
+    nametag          = yml[role]['nametag']
+
+    print("\nEC2 Setup start..\n")
+    print("all  : %s" % all)
+    print("role : %s" % nametag)
+
+    while True:
+        choice = input("%s インスタンスを起動しますか？ [y/n]: " % nametag).lower()
+        if choice == ['y']:
+            print('yes!')
+            return True
+        elif choice in ['n', 'no']:
+            print('No!')
+            return False
+
     print("\nEC2 Setup Finish..\n")
 
 def main():
