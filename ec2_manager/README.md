@@ -13,5 +13,5 @@ cp .env.sample .env
 ### Install
 
 ```sh
-pip3 install -r requirements.txt -t site-packages
+pip install -r requirements.txt -t site-packages
 ```
