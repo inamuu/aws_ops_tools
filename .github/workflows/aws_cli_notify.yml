@@ -1,0 +1,56 @@
+name: Notify next startup cluster time
+
+permissions:
+  id-token: write
+  contents: write
+  issues: write
+  pull-requests: write
+
+#on:
+#  schedule:
+#    - cron: "0 1 * * *"
+
+jobs:
+  notiy-next-startup-cluster-time:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # https://github.com/marketplace/actions/install-aws-cli-action#usage-1
+      - id: install-aws-cli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          version: 2 # default
+          verbose: false # default
+          arch: amd64 # allowed values: amd64, arm64
+          rootdir: "" # defaults to "PWD"
+          workdir: "" # defaults to "PWD/unfor19-awscli"
+
+      # OIDC 連携前提
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ap-northeast-1
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/${{ vars.AWS_ROLE_NAME }}
+          role-session-name: ${{ github.event.repository.name }}
+
+      - id: check_cluster_startup_time
+        name: Check cluster startup time
+        run: |
+          STARTUP_TIME=$(aws rds describe-db-clusters \
+          --query 'DBClusters[?DBClusterIdentifier==`${{ vars.CHECK_CLUSTER_IDENTIFIERS }}`].{DBClusterIdentifier:DBClusterIdentifier, AutomaticRestartTime:AutomaticRestartTime}[0]' --output text | sed 's/\t/ /g')
+          echo "startup_time=$STARTUP_TIME" >> $GITHUB_OUTPUT
+
+      - name: Send GitHub Action trigger data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "text": ":mysql: DB Cluster 次の起動時間通知\n${{ steps.check_cluster_startup_time.outputs.startup_time }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACKWEBHOOK_URL }}
+
